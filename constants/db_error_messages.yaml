@@ -1,0 +1,14 @@
+ConnectionError: Refused Connection
+TimeOut: Request TimeOut
+TooManyRedirects: Too many redirects
+DatabaseError: Error in database,Please contact administrator,
+OperationalError: Error in conection, Please retry or contact administrator
+TimeoutError: Connection Timed Out
+sqlAlchemyError: Something wrong with query
+NoSuchTableError: No such table exists
+NoSuchColumnError: No such table exists
+InternalError: Lost connection to db. Please contact the administrator
+DataError: Error in the input data
+IntegrityError: Database Integrity constraints violation
+NotSupportedError: Trying to call unsupported functionality
+InternalServerError: Something went wrong, Please contact admin
