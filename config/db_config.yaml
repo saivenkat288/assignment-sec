@@ -1,4 +1,4 @@
-host: 127.0.0.1
-port: 5439
-database: postgres
+host: ec2-23-23-199-57.compute-1.amazonaws.com
+port: 5432
+database: d9tpj2dsvqpof2
 schema: public
