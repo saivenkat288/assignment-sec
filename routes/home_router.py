@@ -53,7 +53,7 @@ async def insertAnswers(section: str):
             df = pd.read_csv(BytesIO(data))
             db_client.insertAnswersToDB(df,section)
         elif section == "VulnerabilityManagement":
-            r = requests.get('https://docs.google.com/spreadsheets/d/1PkE3888iGT0JnZkkr6GuvKhN3zEhnwmUcNTYiCJhoto/export?format=csv&gid=2042618344',error_bad_lines=False)
+            r = requests.get('https://docs.google.com/spreadsheets/d/1PkE3888iGT0JnZkkr6GuvKhN3zEhnwmUcNTYiCJhoto/export?format=csv&gid=2042618344')
             data = r.content
             df = pd.read_csv(BytesIO(data))
             db_client.insertAnswersToDB(df,section)
