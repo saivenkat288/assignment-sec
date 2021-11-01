@@ -33,9 +33,7 @@ async def signIn(authParams:AuthParams):
             print("pass_email",passwd)
             if results:
                 return  {"status": 200, "message": "Login Success", "user_data":{
-                    "email":authParams.email,
-                    "name":pass_email.first_name+' '+pass_email.last_name,
-                    
+                    "email":authParams.email,                  
                     "id":pass_email.id
                 }}
             else:
