@@ -11,3 +11,4 @@ sqlalchemy-views==0.3.0
 gunicorn
 passlib[bcrypt]
 cryptography
+matplotlib
