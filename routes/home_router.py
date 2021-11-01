@@ -13,6 +13,7 @@ from io import BytesIO
 from service.service import *
 import requests
 import pandas as pd
+from vincent.colors import brews
 db_client=CrudOperations()
 app = APIRouter()
 
@@ -83,21 +84,79 @@ async def fetchAnswers(section:str):
         traceException(e)
         db_exceptions(e)
 
-@app.get('/plot/graph/{section}/{x_axis}/{y_axis}/{kind}',status_code=status.HTTP_200_OK,name="plot-graph")
-async def plotGraph(section: str,x_axis: str,y_axis: str, kind: str ):
+@app.post('/plot/graph',status_code=status.HTTP_200_OK,name="plot-graph")
+async def plotGraph(section: str,kind: str,storage: str ):
     try:
         if section == "ThreatHunting":
             r = requests.get('https://docs.google.com/spreadsheets/d/1-fEFMqpci_dIA6SEvRs2YIQk28XJdnKSEcMWyXhO9Oc/export?format=csv&gid=820859871')
             data = r.content
             df = pd.read_csv(BytesIO(data))
-            plotGraphUsingDF(df,x_axis,y_axis,kind)
+            if storage == 'local':
+                plotGraphUsingDF(df,x_axis,y_axis,kind)
+            elif storage == "excel":
+                # Create a Pandas Excel writer using XlsxWriter as the engine.
+                excel_file = kind+'.xlsx'
+                sheet_name = 'Sheet1'
+
+                writer = pd.ExcelWriter(excel_file, engine='xlsxwriter')
+                df.to_excel(writer, sheet_name=sheet_name)
+
+                # Access the XlsxWriter workbook and worksheet objects from the dataframe.
+                workbook = writer.book
+                worksheet = writer.sheets[sheet_name]
+                chart = workbook.add_chart({'type': kind})
+                chart.add_series({
+                    'categories': '=Sheet1!B1:F1',
+                    'values':     '=Sheet1!B2:F2',
+                    'points': [
+                        {'fill': {'color': brews['Set1'][0]}},
+                        {'fill': {'color': brews['Set1'][1]}},
+                        {'fill': {'color': brews['Set1'][2]}},
+                        {'fill': {'color': brews['Set1'][3]}},
+                        {'fill': {'color': brews['Set1'][4]}},
+                    ],
+                })
+
+                # Create a chart object.
+                worksheet.insert_chart('B4', chart)
+
+                # Close the Pandas Excel writer and output the Excel file.
+                writer.save()
         elif section == "VulnerabilityManagement":
             r = requests.get('https://docs.google.com/spreadsheets/d/1PkE3888iGT0JnZkkr6GuvKhN3zEhnwmUcNTYiCJhoto/export?format=csv&gid=2042618344',error_bad_lines=False)
             data = r.content
             df = pd.read_csv(BytesIO(data))
-            plotGraphUsingDF(df,x_axis,y_axis,kind)
-        else:
-            df = pd.DataFrame()
+            if storage == 'local':
+                plotGraphUsingDF(df,x_axis,y_axis,kind)
+            elif storage == "excel":
+                # Create a Pandas Excel writer using XlsxWriter as the engine.
+                excel_file = kind+'.xlsx'
+                sheet_name = 'Sheet1'
+
+                writer = pd.ExcelWriter(excel_file, engine='xlsxwriter')
+                df.to_excel(writer, sheet_name=sheet_name)
+
+                # Access the XlsxWriter workbook and worksheet objects from the dataframe.
+                workbook = writer.book
+                worksheet = writer.sheets[sheet_name]
+                chart = workbook.add_chart({'type': kind})
+                chart.add_series({
+                    'categories': '=Sheet1!B1:F1',
+                    'values':     '=Sheet1!B2:F2',
+                    'points': [
+                        {'fill': {'color': brews['Set1'][0]}},
+                        {'fill': {'color': brews['Set1'][1]}},
+                        {'fill': {'color': brews['Set1'][2]}},
+                        {'fill': {'color': brews['Set1'][3]}},
+                        {'fill': {'color': brews['Set1'][4]}},
+                    ],
+                })
+
+                # Create a chart object.
+                worksheet.insert_chart('B4', chart)
+
+                # Close the Pandas Excel writer and output the Excel file.
+                writer.save()
     except Exception as e:
         traceException(e)
     return {"status_code":200, "message":"Graph plotted successfully"}
