@@ -12,3 +12,5 @@ gunicorn
 passlib[bcrypt]
 cryptography
 matplotlib
+vincent
+xlsxwriter
