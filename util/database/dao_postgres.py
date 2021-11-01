@@ -97,7 +97,7 @@ class CrudOperations:
                 else:
                     dynamic_columns.append(Column(col, Text))
             table = Table(table_name, meta, *dynamic_columns,extend_existing=True)
-            #table.drop()
+            table.drop()
             table_creation_sql = CreateTable(table)
             database_connection.engine.execute(table_creation_sql)
             df.to_sql(table_name,con = database_connection,if_exists='replace',index=False)

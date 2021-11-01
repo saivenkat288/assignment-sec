@@ -64,6 +64,7 @@ async def insertAnswers(section: str):
     except Exception as e:
         traceException(e)
         db_exceptions(e)
+    return {"status_code":200,"message":"Successfull"}
 
 @app.patch('/update/answers',status_code=status.HTTP_200_OK,name="update-answers")
 async def updateAnswers():
@@ -72,7 +73,7 @@ async def updateAnswers():
     except Exception as e:
         traceException(e)
         db_exceptions(e)
-
+    return {"status_code":200,"message":"Successfull"}
 @app.get('/fetch/answers/{section}',status_code=status.HTTP_200_OK,name="fetch-answers")
 async def fetchAnswers(section:str):
     try:
